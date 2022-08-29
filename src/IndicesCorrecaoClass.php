@@ -38,6 +38,7 @@ class IndicesCorrecaoClass
     public function codigoDaSerie(int $codigoSerie): self
     {
         $this->codigoSerie = $codigoSerie;
+
         return $this;
     }
 
@@ -51,6 +52,7 @@ class IndicesCorrecaoClass
     {
         $this->dataInicial = $inicial;
         $this->dataFinal = $final;
+
         return $this;
     }
 
@@ -62,6 +64,7 @@ class IndicesCorrecaoClass
     public function NumeroMeses(int $meses): self
     {
         $this->ultimos = $meses;
+
         return $this;
     }
 }
