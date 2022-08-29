@@ -4,6 +4,8 @@ namespace Valbert\IndicesCorrecao;
 
 use DateTime;
 
+use GuzzleHttp\Client;
+
 class IndicesCorrecaoClass
 {
     /**
@@ -35,9 +37,10 @@ class IndicesCorrecaoClass
      * @param int $codigoSerie
      * @return $this
      */
-    public function codigoDaSerie(int $codigoSerie): self
+    public function codigoSerie(int $codigoSerie): self
     {
         $this->codigoSerie = $codigoSerie;
+
         return $this;
     }
 
@@ -51,6 +54,7 @@ class IndicesCorrecaoClass
     {
         $this->dataInicial = $inicial;
         $this->dataFinal = $final;
+
         return $this;
     }
 
@@ -62,6 +66,20 @@ class IndicesCorrecaoClass
     public function NumeroMeses(int $meses): self
     {
         $this->ultimos = $meses;
+
         return $this;
+    }
+
+    /**
+     * Realiza o request para a API do Banco Central
+     * @return string
+     */
+    public function get()
+    {
+        $client = new Client();
+
+        $response = $client->get('http://api.bcb.gov.br/dados/serie/bcdata.sgs.{4175}/dados/ultimos/{2}?formato=json');
+
+        return $response;
     }
 }
