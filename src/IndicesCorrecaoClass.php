@@ -17,15 +17,15 @@ class IndicesCorrecaoClass
 
     /**
      * Data de ínicio da busca
-     * @var DateTime
+     * @var string
      */
-    private DateTime $dataInicial;
+    private string $dataInicial;
 
     /**
      * Data de final da busca
-     * @var DateTime
+     * @var string
      */
-    private DateTime $dataFinal;
+    private string $dataFinal;
 
     /**
      * Últimos N messes da busca
@@ -47,11 +47,11 @@ class IndicesCorrecaoClass
 
     /**
      * Set data inicial e final da busca
-     * @param DateTime $inicial
-     * @param DateTime $final
+     * @param string $inicial
+     * @param string $final
      * @return $this
      */
-    public function dataInicioFim(DateTime $inicial, DateTime $final): self
+    public function dataInicioFim(string $inicial, string $final): self
     {
         $this->dataInicial = $inicial;
         $this->dataFinal = $final;
@@ -80,7 +80,7 @@ class IndicesCorrecaoClass
         $client = new Client();
 
         try {
-            $response = $client->get('https://api.bcb.gov.br/dados/serie/bcdata.sgs.4175/dados/ultimos/2?formato=json')
+            $response = $client->get("https://api.bcb.gov.br/dados/serie/bcdata.sgs.{$this->codigoSerie}/dados/ultimos/{$this->ultimos}?formato=json")
                 ->getBody()
                 ->getContents();
         } catch (GuzzleException $e) {
