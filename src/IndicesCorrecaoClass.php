@@ -2,8 +2,6 @@
 
 namespace Valbert\IndicesCorrecao;
 
-use DateTime;
-
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 
