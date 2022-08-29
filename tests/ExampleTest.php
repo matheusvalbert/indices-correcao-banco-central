@@ -3,7 +3,6 @@
 use Valbert\IndicesCorrecao\IndicesCorrecaoClass;
 
 it('can test', function () {
-
     $indice = new IndicesCorrecaoClass();
 
     $ind = $indice
