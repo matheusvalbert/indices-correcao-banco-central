@@ -5,6 +5,7 @@ namespace Valbert\IndicesCorrecao;
 use DateTime;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
 
 class IndicesCorrecaoClass
 {
@@ -63,7 +64,7 @@ class IndicesCorrecaoClass
      * @param int $meses
      * @return $this
      */
-    public function NumeroMeses(int $meses): self
+    public function numeroMeses(int $meses): self
     {
         $this->ultimos = $meses;
 
@@ -74,11 +75,17 @@ class IndicesCorrecaoClass
      * Realiza o request para a API do Banco Central
      * @return string
      */
-    public function get()
+    public function get(): string
     {
         $client = new Client();
 
-        $response = $client->get('http://api.bcb.gov.br/dados/serie/bcdata.sgs.{4175}/dados/ultimos/{2}?formato=json');
+        try {
+            $response = $client->get('https://api.bcb.gov.br/dados/serie/bcdata.sgs.4175/dados/ultimos/2?formato=json')
+                ->getBody()
+                ->getContents();
+        } catch (GuzzleException $e) {
+            $response = $e;
+        }
 
         return $response;
     }

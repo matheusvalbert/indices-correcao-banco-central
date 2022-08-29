@@ -6,11 +6,11 @@ it('can test', function () {
 
     $indice = new IndicesCorrecaoClass();
 
-    $indice
-        ->NumeroMeses(1)
+    $ind = $indice
+        ->numeroMeses(1)
         ->get();
 
-    dump($indice);
+    dd($ind);
 
     expect(true)->toBeTrue();
 });
