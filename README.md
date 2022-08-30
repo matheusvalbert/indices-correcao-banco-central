@@ -14,8 +14,17 @@ composer require valbert/indices-correcao-banco-central
 ## Utilização
 
 ```php
-$skeleton = new Valbert\IndicesCorrecao();
-echo $skeleton->echoPhrase('Hello, Valbert!');
+$indice = new Indices();
+
+$indice
+    ->codigoSerie(189)
+    ->numeroMeses(12)
+    ->getMeses(true);
+
+$indice
+    ->codigoSerie(189)
+    ->dataInicioFim('01/01/2020', '01/01/2022')
+    ->getPeriodo(true);
 ```
 
 ## Testes
