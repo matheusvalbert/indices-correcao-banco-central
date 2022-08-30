@@ -86,6 +86,7 @@ class Indices
 
             if ($inflacaoAcumulada) {
                 $valorInflacao = $this->calculaInflacaoAcumulada($response);
+
                 return [
                     'valorInflacao' => $valorInflacao,
                     'indice' => $response,
@@ -116,6 +117,7 @@ class Indices
 
             if ($inflacaoAcumulada) {
                 $valorInflacao = $this->calculaInflacaoAcumulada($response);
+
                 return [
                     'valorInflacao' => $valorInflacao,
                     'indice' => $response,
