@@ -13,6 +13,7 @@ it('Número de messes', function () {
 
     expect($ind['inflacao'])->toBeFloat()
         ->and($ind['inflacao'])->toBeLessThan(1)
+        ->and($ind['inflacao'])->toBeGreaterThanOrEqual(0)
         ->and($ind['indices'])->toBeString()
         ->and($ind)->toBeArray();
 });
@@ -28,6 +29,7 @@ it('Período início e fim', function () {
 
     expect($ind['inflacao'])->toBeFloat()
         ->and($ind['inflacao'])->toBeLessThan(1)
+        ->and($ind['inflacao'])->toBeGreaterThanOrEqual(0)
         ->and($ind['indices'])->toBeString()
         ->and($ind)->toBeArray();
 });
