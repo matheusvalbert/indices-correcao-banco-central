@@ -30,7 +30,7 @@ class Indices
      * Últimos N messes da busca
      * @var int
      */
-    private int $ultimos = 0;
+    private int $ultimos;
 
     /**
      * Set código da série
@@ -52,6 +52,7 @@ class Indices
      */
     public function dataInicioFim(string $inicial, string $final): self
     {
+        unset($this->ultimos);
         $this->dataInicial = $inicial;
         $this->dataFinal = $final;
 
@@ -65,71 +66,11 @@ class Indices
      */
     public function numeroMeses(int $meses): self
     {
+        unset($this->dataInicial);
+        unset($this->dataFinal);
         $this->ultimos = $meses;
 
         return $this;
-    }
-
-    /**
-     * Realiza o request para a API do Banco Central utilizando os n últimos meses
-     * @param bool $inflacaoAcumulada
-     * @return array|Exception[]|GuzzleException[]
-     */
-    public function getMeses(bool $inflacaoAcumulada = false): array
-    {
-        $client = new Client();
-
-        try {
-            $response = $client->get("https://api.bcb.gov.br/dados/serie/bcdata.sgs.{$this->codigoSerie}/dados/ultimos/{$this->ultimos}?formato=json")
-                ->getBody()
-                ->getContents();
-
-            if ($inflacaoAcumulada) {
-                $valorInflacao = $this->calculaInflacaoAcumulada($response);
-
-                return [
-                    'valorInflacao' => $valorInflacao,
-                    'indice' => $response,
-                ];
-            }
-        } catch (GuzzleException $e) {
-            $response = $e;
-        }
-
-        return [
-            'indice' => $response,
-        ];
-    }
-
-    /**
-     * Realiza o request para a API do Banco Central utilizando a data de início e fim
-     * @param bool $inflacaoAcumulada
-     * @return array|Exception[]|GuzzleException[]
-     */
-    public function getPeriodo(bool $inflacaoAcumulada = false): array
-    {
-        $client = new Client();
-
-        try {
-            $response = $client->get("https://api.bcb.gov.br/dados/serie/bcdata.sgs.{$this->codigoSerie}/dados?formato=json&dataInicial={$this->dataInicial}&dataFinal={$this->dataFinal}")
-                ->getBody()
-                ->getContents();
-
-            if ($inflacaoAcumulada) {
-                $valorInflacao = $this->calculaInflacaoAcumulada($response);
-
-                return [
-                    'valorInflacao' => $valorInflacao,
-                    'indice' => $response,
-                ];
-            }
-        } catch (GuzzleException $e) {
-            $response = $e;
-        }
-
-        return [
-            'indice' => $response,
-        ];
     }
 
     /**
@@ -152,5 +93,40 @@ class Indices
         $valorInflacaoAcumulada = round($valorInflacaoAcumulada, 6);
 
         return $valorInflacaoAcumulada;
+    }
+
+    /**
+     * Realiza o request para a API do Banco Central
+     * @param bool $inflacaoAcumulada
+     * @return array|Exception[]|GuzzleException[]
+     */
+    public function get(bool $inflacaoAcumulada = true): array
+    {
+        $client = new Client();
+
+        try {
+            if (isset($this->ultimos)) {
+                $indices = $client->get("https://api.bcb.gov.br/dados/serie/bcdata.sgs.{$this->codigoSerie}/dados/ultimos/{$this->ultimos}?formato=json")
+                    ->getBody()
+                    ->getContents();
+            } elseif (isset($this->dataInicial) && isset($this->dataFinal)) {
+                $indices = $client->get("https://api.bcb.gov.br/dados/serie/bcdata.sgs.{$this->codigoSerie}/dados?formato=json&dataInicial={$this->dataInicial}&dataFinal={$this->dataFinal}")
+                    ->getBody()
+                    ->getContents();
+            }
+        } catch (GuzzleException $e) {
+            $indices = $e;
+        }
+
+        if ($inflacaoAcumulada) {
+            return [
+                'inflacao' => $this->calculaInflacaoAcumulada($indices),
+                'indices' => $indices,
+            ];
+        } else {
+            return [
+                'indices' => $indices,
+            ];
+        }
     }
 }
