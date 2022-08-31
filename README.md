@@ -11,6 +11,10 @@ Realiza a consulta dos índices de correção através da API do Banco Central.
 composer require valbert/indices-correcao-banco-central
 ```
 
+## Código dos índices
+
+Para obter o código dos índices, basta verificar no [Link](https://www3.bcb.gov.br/sgspub/localizarseries/localizarSeries.do?method=prepararTelaLocalizarSeries).
+
 ## Utilização
 
 ```php
@@ -19,12 +23,12 @@ $indice = new Indices();
 $indice
     ->codigoSerie(189)
     ->numeroMeses(12)
-    ->getMeses(true);
+    ->get();
 
 $indice
     ->codigoSerie(189)
     ->dataInicioFim('01/01/2020', '01/01/2022')
-    ->getPeriodo(true);
+    ->get();
 ```
 
 ## Testes
