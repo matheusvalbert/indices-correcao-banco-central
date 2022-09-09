@@ -18,15 +18,11 @@ Para obter o código dos índices, basta verificar no [Link](https://www3.bcb.go
 ## Utilização
 
 ```php
-$indice = new Indices();
-
-$indice
-    ->codigoSerie(189)
+Indices::codigoSerie(189)
     ->numeroMeses(12)
     ->get();
 
-$indice
-    ->codigoSerie(189)
+Indices::codigoSerie(189)
     ->dataInicioFim('01/01/2020', '01/01/2022')
     ->get();
 ```

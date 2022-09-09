@@ -3,33 +3,41 @@
 use Valbert\IndicesCorrecao\Indices;
 
 /** @test */
-it('Número de messes', function () {
-    $indice = new Indices();
+it('Erro na chamada numeroMeses e dataInicioFim em conjuto', function () {
+    Indices::codigoSerie(189)
+        ->numeroMeses(12)
+        ->dataInicioFim('01/01/2020', '01/01/2022')
+        ->get();
+})->expectException(\Valbert\IndicesCorrecao\chamadaFuncaoException::class);
 
-    $ind = $indice
-        ->codigoSerie(189)
+/** @test */
+it('Erro ao chamar get sem chamar numeroMeses ou dataInicioFim', function () {
+    Indices::codigoSerie(189)
+        ->get();
+})->expectException(Exception::class);
+
+/** @test */
+it('Número de messes', function () {
+    $indice = Indices::codigoSerie(189)
         ->numeroMeses(12)
         ->get();
 
-    expect($ind['inflacao'])->toBeFloat()
-        ->and($ind['inflacao'])->toBeLessThan(1)
-        ->and($ind['inflacao'])->toBeGreaterThanOrEqual(0)
-        ->and($ind['indices'])->toBeString()
-        ->and($ind)->toBeArray();
+    expect($indice['inflacao'])->toBeFloat()
+        ->and($indice['inflacao'])->toBeLessThan(1)
+        ->and($indice['inflacao'])->toBeGreaterThanOrEqual(0)
+        ->and($indice['indices'])->toBeString()
+        ->and($indice)->toBeArray();
 });
 
 /** @test */
 it('Período início e fim', function () {
-    $indice = new Indices();
-
-    $ind = $indice
-        ->codigoSerie(189)
+    $indice = Indices::codigoSerie(189)
         ->dataInicioFim('01/01/2020', '01/01/2022')
         ->get();
 
-    expect($ind['inflacao'])->toBeFloat()
-        ->and($ind['inflacao'])->toBeLessThan(1)
-        ->and($ind['inflacao'])->toBeGreaterThanOrEqual(0)
-        ->and($ind['indices'])->toBeString()
-        ->and($ind)->toBeArray();
+    expect($indice['inflacao'])->toBeFloat()
+        ->and($indice['inflacao'])->toBeLessThan(1)
+        ->and($indice['inflacao'])->toBeGreaterThanOrEqual(0)
+        ->and($indice['indices'])->toBeString()
+        ->and($indice)->toBeArray();
 });

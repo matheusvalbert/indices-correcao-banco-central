@@ -37,11 +37,12 @@ class Indices
      * @param int $codigoSerie
      * @return $this
      */
-    public function codigoSerie(int $codigoSerie): self
+    public static function codigoSerie(int $codigoSerie): self
     {
-        $this->codigoSerie = $codigoSerie;
+        $indices = new self();
+        $indices->codigoSerie = $codigoSerie;
 
-        return $this;
+        return $indices;
     }
 
     /**
@@ -49,10 +50,13 @@ class Indices
      * @param string $inicial
      * @param string $final
      * @return $this
+     * @throws Exception
      */
     public function dataInicioFim(string $inicial, string $final): self
     {
-        unset($this->ultimos);
+        if (isset($this->ultimos)) {
+            throw new chamadaFuncaoException();
+        }
         $this->dataInicial = $inicial;
         $this->dataFinal = $final;
 
@@ -63,11 +67,13 @@ class Indices
      * Set número últimos meses
      * @param int $meses
      * @return $this
+     * @throws Exception
      */
     public function numeroMeses(int $meses): self
     {
-        unset($this->dataInicial);
-        unset($this->dataFinal);
+        if (isset($this->dataInicial) || isset($this->dataFinal)) {
+            throw new chamadaFuncaoException();
+        }
         $this->ultimos = $meses;
 
         return $this;
@@ -99,9 +105,14 @@ class Indices
      * Realiza o request para a API do Banco Central
      * @param bool $inflacaoAcumulada
      * @return array|Exception[]|GuzzleException[]
+     * @throws Exception
      */
     public function get(bool $inflacaoAcumulada = true): array
     {
+        if (! isset($this->ultimos) && ! (isset($this->dataInicial) && isset($this->dataFinal))) {
+            throw new Exception('É necessário chamar a classe numeroMeses ou dataInicioFim antes de chamar o get');
+        }
+
         $client = new Client();
 
         try {
