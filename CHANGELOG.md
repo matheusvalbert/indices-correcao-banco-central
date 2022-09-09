@@ -2,7 +2,9 @@
 
 All notable changes to `indices-correcao-banco-central` will be documented in this file.
 
-## Nova versão refatorada - 2022-09-09
+## 2.0.0 - 09/09/2022
+
+### Nova versão refatorada
 
 - Refatoração da biblioteca
 - Melhoria na chamada da classe
